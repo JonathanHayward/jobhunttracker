@@ -1,0 +1,118 @@
+body
+  {
+  font-family: Verdana, Arial, sans;
+  }
+div#logout
+  {
+  background-color: white;
+  font-weight: bold;
+  padding: 4px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  }
+h2.day
+  {
+  margin-bottom: 0;
+  }
+.hidden
+  {
+  display: none;
+  }
+span.hour-minute-separator, span.meridian
+  {
+  color: #aaaaaa;
+  }
+span.minutes
+  {
+  color: #808080;
+  }
+span.time
+  {
+  margin-right: 5px;
+  }
+table p
+  {
+  margin: 0;
+  }
+td.Completed
+  {
+  border-left: 3px solid black;
+  background-color: white;
+  }
+td.Delete
+  {
+  background-color: silver;
+  }
+td.Invisible
+  {
+  background-color: black;
+  }
+td.Background
+  {
+  background-color: white;
+  }
+td.You.Decide
+  {
+  background-color: silver;
+  }
+td.In.Progress
+  {
+  background-color: black;
+  }
+td.Important
+  {
+  background-color: white;
+  }
+td.In.Question
+  {
+  background-color: silver;
+  }
+td.Problems
+  {
+  background-color: black;
+  }
+ul.activities
+  {
+  list-style-type: none;
+  margin-top: 0;
+  }
+@media only screen and (min-width: 513px)
+  {
+  #Calendar
+    {
+    height: 46%;
+    left: 2%;
+    overflow-y: auto;
+    position: absolute;
+    top: 2%;
+    width: 46%;
+    }
+  #Scratchpad
+    {
+    height: 46%;
+    left: 2%;
+    overflow-y: auto;
+    position: absolute;
+    top: 52%;
+    width: 46%;
+    }
+  #Todo
+    {
+    height: 46%;
+    left: 52%;
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    width: 46%;
+    }
+  #YouPick
+    {
+    height: 50%;
+    left: 52%;
+    overflow-y: auto;
+    position: absolute;
+    top: 52%;
+    width: 46%;
+    }
+  }

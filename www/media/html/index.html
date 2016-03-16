@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pragmatometer</title>
+    <link rel="stylesheet" type="text/css"
+      href="/media/javascripts/jquery-ui.1.11.4/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css"
+      href="/media/stylesheets/site.css" />
+
+  </head>
+  <body>
+    <div id="logout"><a href="/?mode=logout">Log out</a></div>
+    <div id="main"></div>
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.1/react-with-addons.js">
+    </script>
+    <script
+      src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.js">
+    </script>
+    <script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"
+      ></script>
+    <script src="/media/javascripts/json2.js"></script>
+    <script src="/media/javascripts/modernizr.js"></script>
+    <script src="/media/javascripts/backstretch.js"></script>
+    <script>
+      jQuery.backstretch('/media/images/ENIAC_faded.jpg');
+    </script>
+    <script>
+      var username = '%(username)s';
+      var password = '%(password)s';
+      if (localStorage['username'] && !username)
+        {
+        username = localStorage['username'];
+        }
+      if (localStorage['password'] && !password)
+        {
+        password = localStorage['password'];
+        }
+      if (%(stay_logged_in)s)
+        {
+        localStorage['username'] = username;
+        localStorage['password'] = password;
+        }
+      var initial_calendar = '%(Calendar)s';
+      var initial_scratchpad = '%(Scratchpad)s';
+      var initial_todo = '%(Todo)s';
+      var checkLogin = function(username, password)
+        {
+        var result = null;
+        jQuery.ajax('?mode=checkLogin', {
+          async: false,
+          data:
+            {
+            'password': password,
+            'username': username
+            },
+          complete: function(jqXHR, textStatus)
+            {
+            console.log(jqXHR.responseText);
+            if (jqXHR.responseText == 'true')
+              {
+              result = true;
+              }
+            else
+              {
+              result = false;
+              }
+            }
+          });
+        }
+    </script>
+    <script src="/media/javascripts/site.js"></script>
+  </body>
+</html>
