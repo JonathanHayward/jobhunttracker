@@ -2142,6 +2142,7 @@ SOFTWARE.
                 border: 1px solid black;
                 padding: 4px;
                 margin: 5px;
+                margin-left: 0px;
                 }
             input.comment 
                 {
