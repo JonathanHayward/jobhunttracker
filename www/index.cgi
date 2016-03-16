@@ -2141,8 +2141,10 @@ SOFTWARE.
                 {
                 border: 1px solid black;
                 padding: 4px;
-                margin: 5px;
+                margin-top: 6px;
+                margin-bottom: 4px;
                 margin-left: 0px;
+                margin-right: 5px;
                 }
             input.comment 
                 {
@@ -2568,7 +2570,7 @@ SOFTWARE.
         <div id="lightbox-contents"></div>
 
         <img src="media/images/down_arrow.png" id="more" />
-        <p class="footer"> &copy; 2016, licensed under the terms of the <a href="license.txt" target="_blank">MIT License</a>.  <em>This website was created, in two weeks, including all aspects of User Experience and User Interface, by C.J.S. Hayward (<a href="https://CJSHayward.com">website</a>, <a href="mailto:CJSH@CJSHayward.com?subject=To+the+author">email</a>).</em>
+        <p class="footer"> &copy; 2016, licensed under the terms of the <a href="license.txt" target="_blank">MIT License</a> (<a href="https://github.com/JonathanHayward/jobhunttracker">GitHub</a>.  <em>This website was created, in two weeks, including all aspects of User Experience and User Interface, by C.J.S. Hayward (<a href="https://CJSHayward.com">website</a>, <a href="mailto:CJSH@CJSHayward.com?subject=To+the+author">email</a>).</em>
         </p>
         %(scripts)s
         <script type="text/javascript">var switchTo5x=true;</script>
