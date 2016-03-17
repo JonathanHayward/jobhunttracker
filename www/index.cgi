@@ -426,13 +426,9 @@ scripts = '''
             }
         var edit_existing = function(identifier)
             {
-            // console.log('edit_existing');
-            var company = monolith['companies'][identifier];
-            display_not_edit = false;
-            document.getElementById('name').value = company['name'];
-            (document.getElementById('description').value = company['description']);
-            jQuery('#notes').html(render_company(extract_current_company(
-              company)));
+            jQuery('#notes').html(prerender_company(identifier,
+              false)['html']);
+            // jQuery(add_additional_entry('contactperson', identifier));
             jQuery('#tabs').tabs('option', 'active', 1);
             return false;
             }
@@ -1388,6 +1384,8 @@ scripts = '''
                     workbench.push('</tr>');
                     workbench.push('<tr>');
                     workbench.push('<th>Description</th>');
+                    console.log('Company: ');
+                    console.log(company);
                     workbench.push('<td>');
                     workbench.push(
                       '<textarea name="description" id="description" ' +
@@ -1418,11 +1416,13 @@ scripts = '''
                         company['update'] = [];
                         save();
                         }
+
                     var length = Math.max(1, company['update'].length);
                     if (typeof company !== 'undefined' && typeof company['update'] !== 'undefined' && company['update'][length - 1])
                         {
                         length += 1;
                         }
+
                     for(var index = 0; index < length; index += 1)
                         {
                         if (typeof company === 'undefined' ||
@@ -1455,17 +1455,83 @@ scripts = '''
                     workbench.push('<th>Information about contacts</th>');
                     workbench.push('<td>');
                     workbench.push('<div class="repeating" id="repeat-contactperson" data-new-entry = "<textarea class=\\\'contactperson\\\' name=\\\'contactperson?\\\' id=\\\'contactperson?\\\' placeholder=\\\'The name of a contact person, and anything else you\\\'d like to keep track of.\\\'></textarea><input type=\\\'url\\\' class=\\\'contact-detail\\\' name=\\\'url?\\\' id=\\\'url?\\\' placeholder=\\\'URL, e.g. &quot;CJSHayward.com&quot;\\\' /><input type=\\\'email\\\' name=\\\'email?\\\' id=\\\'email?\\\' class=\\\'contact-detail\\\' placeholder=\\\'Email address.\\\'/><input type=\\\'phone\\\' name=\\\'phone?\\\' id=\\\'phone?\\\' class=\\\'contact-detail\\\' placeholder=\\\'Phone number.\\\' /><input type=\\\'text\\\' name=\\\'skype?\\\' id=\\\'skype?\\\' class=\\\'contact-detail\\\' placeholder=\\\'Skype ID.\\\' /><textarea class=\\\'contact-detail\\\' name=\\\'other?\\\' id=\\\'other?\\\' placeholder=\\\'Any other form of contact information you want to keep\\\'></textarea>" />');
+                    var culled_contacts = [];
+                    if (typeof company['contactperson'] === 'undefined')
+                        {
+                        company['contactperson'] = [];
+                        save();
+                        }
+                    var culled_contacts = [];
+                    for(var index = 0; index <
+                      Math.max(company['contactperson'].length,
+                      Math.max(company['url'].length,
+                      Math.max(company['email'].length,
+                      Math.max(company['phone'].length,
+                      Math.max(company['skype'].length,
+                      company['other'].length)))));
+                      index += 1)
+                        {
+                        if (company['contactperson'][index] ||
+                          company['url'][index] ||
+                          company['email'][index] ||
+                          company['phone'][index] ||
+                          company['skype'][index] ||
+                          company['other'][index])
+                            {
+                            culled_contacts.push({
+                              'contactperson': company['contactperson'][index] || '',
+                              'url': company['url'][index] || '',
+                              'email': company['email'][index] || '',
+                              'phone': company['phone'][index] || '',
+                              'skype': company['skype'][index] || '',
+                              'other': company['other'][index] || ''
+                              });
+                            }
+                        }
+                    var lookup = function(index, identifier)
+                        {
+                        if (culled_contacts)
+                            {
+                            if (culled_contacts[index])
+                                {
+                                if (culled_contacts[index][identifier])
+                                    {
+                                    return sanitize(
+                                      culled_contacts[index][identifier]);
+                                    }
+                                else
+                                    {
+                                    return '';
+                                    }
+                                }
+                            else
+                                {
+                                return '';
+                                }
+                            }
+                        else
+                            {
+                            return '';
+                            }
+                        };
+                    for(var index = 0; index < culled_contacts.length + 1;
+                      index += 1)
+                        {
+                        workbench.push('<strong>Contact person:</strong><br />');
+                        workbench.push('<textarea class="contactperson" name="contactperson' + index + '" id="contactperson' + index + '" placeholder="The name of a contact person, and anything else you&apos;d like to keep track of." value="' + lookup(index, 'contactperson') + '"></textarea>');
+                        workbench.push('<strong>URL:</strong><br />');
+                        workbench.push('<input type="url" name="url' + index + '" id="url' + index + '" placeholder="E.g. &quot;CJSHayward.con&quot;" class="contact-detail" value="' + lookup(index, 'url') + '">');
+                        workbench.push('<strong>Email address:</strong><br />');
+                        workbench.push('<input type="email" name="email' + index + '" id="email' + index + '" placeholder="This contact&apos;s email address." value="' + lookup(index, 'email') + '" class="contact-detail">');
+                        workbench.push('<strong>Phone number:</strong><br />');
+                        workbench.push('<input type="tel" name="phone' + index + '" id="phone' + index + '" value="' + lookup(index, 'phone') + '" placeholder="This contact&apos;s phone number." class="contact-detail">');
+                        workbench.push('<strong>Skype ID:</strong><br />')
+                        workbench.push('<input type="text" name="skype' + index + '" id="skype' + index + '" value="' + lookup(index, 'skype') + '" placeholder="This person&apos;s Skype ID." class="contact-detail">');
+                        workbench.push('<strong>Any other contact information:</strong><br />');
+                        workbench.push('<textarea class="other" name="other' + index + '" id="other' + index + '" placeholder="Any other contact information you may wish to keep for this person." value="' + lookup(index, 'other') + '"></textarea>');
+                        }
                     workbench.push('</div>')
                     workbench.push('<p class="add-another"><a href="javascript:add_additional_entry(\\\'contactperson\\\', ' + company['guid'] + ');">Add another contact person with notes and contact information.</a></p>');
-                    setTimeout(function()
-                        {
-                        if (!contact_initialized)
-                            {
-                            add_additional_entry('contactperson',
-                              company['guid']);
-                            contact_initialized = true;
-                            }
-                        }, 0);
                     workbench.push('</td>');
                     workbench.push('</tr>');
                     workbench.push('<tr>');
@@ -2137,7 +2203,8 @@ SOFTWARE.
                 z-index: 1000;
                 }
             input[type="text"], input[type="url"], input[type="email"],
-            input[type="number"], input[type="tel"], textarea
+            input[type="number"], input[type="tel"], input[type="date"],
+            textarea
                 {
                 border: 1px solid black;
                 padding: 4px;
@@ -2572,7 +2639,7 @@ SOFTWARE.
         <div id="lightbox-contents"></div>
 
         <img src="media/images/down_arrow.png" id="more" />
-        <p class="footer"> &copy; 2016, licensed under the terms of the <a href="license.txt" target="_blank">MIT License</a> (<a href="https://github.com/JonathanHayward/jobhunttracker">GitHub</a>.  <em>This website was created, in two weeks, including all aspects of User Experience and User Interface, by C.J.S. Hayward (<a href="https://CJSHayward.com">website</a>, <a href="mailto:CJSH@CJSHayward.com?subject=To+the+author">email</a>).</em>
+        <p class="footer"> &copy; 2016, licensed under the terms of the <a href="license.txt" target="_blank">MIT License</a> (<a href="https://github.com/JonathanHayward/jobhunttracker">GitHub</a>).  <em>This website was created, in two weeks, including all aspects of User Experience and User Interface, by C.J.S. Hayward (<a href="https://CJSHayward.com">website</a>, <a href="mailto:CJSH@CJSHayward.com?subject=To+the+author">email</a>).</em>
         </p>
         %(scripts)s
         <script type="text/javascript">var switchTo5x=true;</script>
