@@ -2559,11 +2559,9 @@ SOFTWARE.
                         <div class="button"><a class="button" href="#main"
                           onclick="add_new();">Save and add another</a>
                         </div>
-                        <!--
                         <div class="unbutton">
                           <a href="javascript:save(); add_new(); jQuery('#tabs').tabs('option', 'active', 2);">Save; then view saved jobs</a>
                         </div>
-                        -->
                     </div>
                 </div>
                 <div class="tab-content" id="tabs-view">
